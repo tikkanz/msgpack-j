@@ -18,7 +18,7 @@ Import into projects and open in jqt or other. It's very simple.
 e.g.
 
        pack_obj 'Hello World'
-    ab48656c6c6f20576f726c64`
+    ab48656c6c6f20576f726c64
 
        unpack_obj 'ab48656c6c6f20576f726c64'
     Hello World
