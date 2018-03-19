@@ -1,16 +1,16 @@
 NB. J implementation of MsgPack
 NB.
 
-
-require '~user/projects/msgpack-j/hashmap.ijs'
-require '~user/projects/msgpack-j/utils.ijs'
+require '~ProjectsGit/msgpack-j/utils.ijs'
+require '~ProjectsGit/msgpack-j/hashmap.ijs'
 
 
 NB. BYTE PREFIXES - constants
-(nil=: 'c0'),(reserved=: 'c1'),(false=: 'c2'),(true=: 'c3'),(bin8=: 'c4'),(bin16=: 'c5'),(bin32=: 'c6'),(ext8=: 'c7'),(ext16=: 'c8')
-(ext32=: 'c9'),(float32=: 'ca'),(float64=: 'cb'),(uint8=: 'cc'),(uint16=: 'cd'),(uint32=: 'ce'),(uint64=: 'cf'),(int8=: 'd0'),(int16=: 'd1')
-(int32=: 'd2'),(int64=: 'd3'),(fixext1=: 'd4'),(fixext2=: 'd5'),(fixext4=: 'd6'),(fixext8=: 'd7'),(fixext16=: 'd8'),(str8=: 'd9'),(str16=: 'da')
-(str32=: 'db'),(array16=: 'dc'),(array32=: 'dd'),(map16=: 'de'),(map32=: 'df')
+nil=: 'c0' [ reserved=: 'c1' [ false=: 'c2' [ true=: 'c3' [ bin8=: 'c4' [ bin16=: 'c5' [ bin32=: 'c6' [ ext8=: 'c7' [ ext16=: 'c8'
+ext32=: 'c9' [ float32=: 'ca' [ float64=: 'cb' [ uint8=: 'cc' [ uint16=: 'cd' [ uint32=: 'ce' [ uint64=: 'cf' [ int8=: 'd0' [ int16=: 'd1'
+int32=: 'd2' [ int64=: 'd3' [ fixext1=: 'd4' [ fixext2=: 'd5' [ fixext4=: 'd6' [ fixext8=: 'd7' [ fixext16=: 'd8' [ str8=: 'd9' [ str16=: 'da'
+str32=: 'db' [ array16=: 'dc' [ array32=: 'dd' [ map16=: 'de' [ map32=: 'df'
+
 
 is_boxed=: 0&<@:L.
 
@@ -69,8 +69,8 @@ NB. =========================================================
 NB. PACK INTEGERS
 NB. =========================================================
 convert_int=: |."1@:,@:(|."1)@:hfd@:(a.&i.)@:(2&(3!:4))
-pack_integer=: monad define
 
+pack_integer=: monad define
 if. y < 0 do.
   if. y > _32 do. NB. 5 bits 111YYYYY form
     1 hfd_stretch"0 0 y
@@ -354,7 +354,7 @@ elseif. type-:array32 do. len=. dfh 8{.strip2 y
   len=. 8+get_len (strip2 y);len
 NB. map
 elseif. 1 do. len=. dfh 1{type
-  len=. get_map_len (strip2 y);len
+  len=. read_map_len (strip2 y);len
 end.
 len+2 NB. add the prefix byte.
 )
